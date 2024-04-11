@@ -1,0 +1,12 @@
+# This CloudFormation template creates a CloudWatch Event.
+
+Resources:
+  MyCloudWatchEvent:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: My CloudWatch Event
+      ScheduleExpression: rate(1 day)
+      State: ENABLED
+      Targets:
+        - Arn: arn:aws:lambda:us-east-1:123456789012:function:MyLambdaFunction
+          Id: TargetFunction

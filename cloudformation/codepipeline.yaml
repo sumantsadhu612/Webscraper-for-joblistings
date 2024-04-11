@@ -1,0 +1,52 @@
+# This CloudFormation template creates a CodePipeline.
+
+Resources:
+  MyCodePipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: MyCodePipeline
+      RoleArn: arn:aws:iam::123456789012:role/MyCodePipelineRole
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Version: 1
+                Provider: GitHub
+              OutputArtifacts:
+                - Name: SourceOutput
+              Configuration:
+                Owner: mygithubusername
+                Repo: mygithubrepo
+                Branch: master
+                OAuthToken: mygithuboauthtoken
+                PollForSourceChanges: true
+        - Name: Build
+          Actions:
+            - Name: BuildAction
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              InputArtifacts:
+                - Name: SourceOutput
+              Configuration:
+                ProjectName: MyCodeBuildProject
+        - Name: Deploy
+          Actions:
+            - Name: DeployAction
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: CloudFormation
+              InputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                StackName: MyCloudFormationStack
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM
+                RoleArn: arn:aws:iam::123456789012:role/MyCloudFormationRole

@@ -1,0 +1,13 @@
+# This CloudFormation template deploys the Lambda function.
+
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: MyLambdaFunction
+      Runtime: python3.8
+      Handler: app.lambda_handler
+      Role: arn:aws:iam::123456789012:role/service-role/MyLambdaRole
+      Code:
+        S3Bucket: mylambdafunction-codebucket
+        S3Key: lambda_function.zip

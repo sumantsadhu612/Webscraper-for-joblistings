@@ -1,0 +1,8 @@
+# This CloudFormation template creates an API Gateway.
+
+Resources:
+  MyApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: MyApi
+      Description: My API
